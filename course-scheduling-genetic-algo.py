@@ -234,6 +234,40 @@ def genetic_algorithm_with_two_point_crossover():
     print(f"Fitness: {best_fitness}")
 
 
+# Genetic Algorithm with Two Point Crossover and Tournament Selection
+def genetic_algorithm_with_two_point_crossover_and_tournament_selection():
+
+    population = [generate_chromosome() for _ in range(population_size)]
+
+    for i in range(generations):
+        fitnesses = [calculate_fitness(chromosome) for chromosome in population]
+        
+        if all(f == float('-inf') for f in fitnesses):
+            raise ValueError("All chromosomes have invalid fitness.")
+
+        new_population = []
+
+        for _ in range(population_size // 2):
+            parent1 = tournament_select(population, fitnesses, tournament_size=3)
+            parent2 = tournament_select(population, fitnesses, tournament_size=3)
+            if parent1 is None or parent2 is None:
+                continue
+            child1, child2 = two_point_crossover(parent1, parent2)
+            new_population.extend([mutatation(child1), mutatation(child2)])
+
+        population = new_population
+
+        print("Population:", population)
+        print("Fitnesses:", fitnesses)
+
+    best_chromosome = max(population, key=calculate_fitness)
+    best_fitness = calculate_fitness(best_chromosome)
+
+    print(f"Best Chromosome: {''.join(map(str, best_chromosome))}")
+    print(f"Fitness: {best_fitness}")
+
+
 genetic_algorithm()
 genetic_algorithm_with_tournament_selection()
 genetic_algorithm_with_two_point_crossover()
+genetic_algorithm_with_two_point_crossover_and_tournament_selection()
