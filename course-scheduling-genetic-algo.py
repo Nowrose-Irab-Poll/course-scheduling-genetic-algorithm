@@ -167,5 +167,73 @@ def genetic_algorithm_with_tournament_selection():
     print(f"Fitness: {best_fitness}")
 
 
+# Two Point Crossover
+def two_point_crossover(parent1, parent2):
+    """
+    Perform two-point crossover on two parents to generate two offspring.
+    
+    Args:
+        parent1 (list): Binary chromosome of the first parent.
+        parent2 (list): Binary chromosome of the second parent.
+
+    Returns:
+        tuple: Two offspring chromosomes.
+    """
+    length = len(parent1)
+
+    # Randomly choose two crossover points ensuring point2 > point1
+    point1 = random.randint(0, length - 2)
+    point2 = random.randint(point1 + 1, length - 1)
+
+    print(f"Chosen crossover points: {point1}, {point2}")
+
+    # Create offspring by swapping segments between the two points
+    offspring1 = (
+        parent1[:point1] +
+        parent2[point1:point2] +
+        parent1[point2:]
+    )
+    offspring2 = (
+        parent2[:point1] +
+        parent1[point1:point2] +
+        parent2[point2:]
+    )
+
+    return offspring1, offspring2
+
+# Genetic Algorithm with Two Point Crossover
+def genetic_algorithm_with_two_point_crossover():
+
+    population = [generate_chromosome() for _ in range(population_size)]
+
+    for generation in range(generations):
+        fitnesses = [calculate_fitness(chromosome) for chromosome in population]
+        
+        if all(f == float('-inf') for f in fitnesses):
+            raise ValueError("All chromosomes have invalid fitness.")
+
+        new_population = []
+
+        for _ in range(population_size // 2):
+            parent1 = select_parent(population, fitnesses)
+            parent2 = select_parent(population, fitnesses)
+            if parent1 is None or parent2 is None:
+                continue
+            child1, child2 = two_point_crossover(parent1, parent2)
+            new_population.extend([mutatation(child1), mutatation(child2)])
+
+        population = new_population
+
+        print("Population:", population)
+        print("Fitnesses:", fitnesses)
+
+    best_chromosome = max(population, key=calculate_fitness)
+    best_fitness = calculate_fitness(best_chromosome)
+
+    print(f"Best Chromosome: {''.join(map(str, best_chromosome))}")
+    print(f"Fitness: {best_fitness}")
+
+
 genetic_algorithm()
 genetic_algorithm_with_tournament_selection()
+genetic_algorithm_with_two_point_crossover()
