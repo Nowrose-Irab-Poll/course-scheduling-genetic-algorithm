@@ -49,3 +49,32 @@ The fitness function evaluates the quality of a schedule based on the following 
 8.  Output:
     - The best chromosome and its fitness score are printed.
 
+## Input and Output
+
+### Input
+- Courses: ["CSE110", "MAT110", "PHY112"]
+- Timeslots: 3
+
+### Output
+- Best Chromosome: The binary string representing the optimal schedule.
+- Fitness: The fitness score of the best chromosome.
+- 
+### Example Output
+```
+Best Chromosome: 110110010
+Fitness: -6
+```
+
+## Improvements and Future Work
+-  Extend the algorithm to support:
+  - Different weights for penalties.
+  - Variable timeslot lengths.
+  - Course priorities or dependencies.
+- Integrate visualization tools for schedule representation.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contributions
+Contributions, issues, and feature requests are welcome! Feel free to open a pull request or raise an issue on GitHub.
+
